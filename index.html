@@ -17,11 +17,40 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
     <script>
+    var ipZip;
+    var ipCountryCode;
+    var openWeatherCall;
 
+    $(document).ready(function () {
+      $.getJSON("http://ip-api.com/json", function (data) {
+        document.getElementById('city').innerHTML = data.city;
+        ipZip = data.zip;
+        ipCountryCode = data.countryCode;
+        document.getElementById('zip').innerHTML = ipZip
+        document.getElementById('countryCode').innerHTML = ipCountryCode;
+
+        openWeatherCall = "api.openweathermap.org/data/2.5/weather?zip=" + ipZip + "," + ipCountryCode;
+        document.getElementById('OWCall').innerHTML = openWeatherCall;
+
+        $.getJSON("api.openweathermap.org/data/2.5/weather?zip=" + data.zip + "," + data.countryCode, function(weather) {
+          document.getElementById('currentTemp').innerHTML = weather.main;
+        });
+      });
+
+      /*openWeatherCall = "api.openweathermap.org/data/2.5/weather?zip=" + ipZip + "," + ipCountryCode;
+      document.getElementById('OWCall').innerHTML = openWeatherCall;
+      $.getJSON(openWeatherCall, function(weather) {
+        document.getElementById('currentTemp').innerHTML = weather.main.temp;
+      });*/
+    });
     </script>
   </head>
 
   <body>
-
+    <p id="city"></p>
+    <p id="zip"></p>
+    <p id="countryCode"></p>
+    <p id="OWCall"></p>
+    <p id="currentTemp"></p>
   </body>
 </html>
