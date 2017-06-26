@@ -19,6 +19,8 @@
     <script>
     var ipZip;
     var ipCountryCode;
+    var lat;
+    var long;
     var openWeatherCall;
 
     $(document).ready(function () {
@@ -26,15 +28,24 @@
         document.getElementById('city').innerHTML = data.city;
         ipZip = data.zip;
         ipCountryCode = data.countryCode;
+        lat = data.lat;
+        long = data.lon;
         document.getElementById('zip').innerHTML = ipZip
         document.getElementById('countryCode').innerHTML = ipCountryCode;
+        document.getElementById('latitude').innerHTML = lat;
+        document.getElementById('longitude').innerHTML = long;
 
+        $.getJSON("https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&key=AIzaSyAWVN2IDXp19x9tMZvDN0WM3X67HZAYIWE", function(json){
+          var location = json.results[1].formatted_address;
+          $("#location").html(location);
+        });
+/*
         openWeatherCall = "api.openweathermap.org/data/2.5/weather?zip=" + ipZip + "," + ipCountryCode;
         document.getElementById('OWCall').innerHTML = openWeatherCall;
 
         $.getJSON("api.openweathermap.org/data/2.5/weather?zip=" + data.zip + "," + data.countryCode, function(weather) {
           document.getElementById('currentTemp').innerHTML = weather.main;
-        });
+        }); */
       });
 
       /*openWeatherCall = "api.openweathermap.org/data/2.5/weather?zip=" + ipZip + "," + ipCountryCode;
@@ -54,6 +65,9 @@
           <p id="zip"></p>
           <p id="countryCode"></p>
           <p id="OWCall"></p>
+          <p id="latitude"></p>
+          <p id="longitude"></p>
+          <p id="location"></p>
           <p id="currentTemp"></p>
         </div>
       </div> <!-- End of Row -->
